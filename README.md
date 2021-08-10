@@ -1,9 +1,7 @@
 # Project Name
 
 **Author**: Thaer Al Jomhawi
-**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
-
-## Overview
+**Version**: 1.0.0
 
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for this class. (i.e. What's your problem domain?) -->
 
@@ -28,7 +26,7 @@
 Time Estimates
 For each of the lab features, make an estimate of the time it will take you to complete the feature, and record your start and finish times for that feature:
 
-Name of feature: **************\_\_\_\_**************
+Name of feature: ******\*\*******\_\_\_\_******\*\*******
 
 Estimate of time needed to complete: **\_**
 
