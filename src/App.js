@@ -63,7 +63,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col>
-              <div style={{ margin: "10px" }}>
+              <div style={{ margin: "20px" }}>
                 <Form onSubmit={(e) => this.submitHandler(e)}>
                   <Form.Group
                     className="mb-3"
@@ -84,6 +84,7 @@ class App extends Component {
                   </Form.Group>
                 </Form>
               </div>
+
               <div style={{ padding: "20px" }}>
                 <Explore
                   cityName={this.state.cityName}
