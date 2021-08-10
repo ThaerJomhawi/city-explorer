@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import Explore from "./components/Explore";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { Container, Row, Col } from "react-bootstrap";
+import Alert from "react-bootstrap/Alert";
 
 class App extends Component {
   constructor(props) {
@@ -10,7 +15,8 @@ class App extends Component {
       lat: "",
       lon: "",
       cityName: "",
-      // alertError: " ",
+      displayError: false,
+      errorMsg: "",
     };
   }
 
@@ -22,51 +28,73 @@ class App extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    let url = `https://eu1.locationiq.com/v1/search.php?key=pk.273e78dd71a98f0da4149ed2d786eb7b&q=${this.cityName}&format=json`;
-    axios.get(url).then((res) => {
-      let data = res.data[0];
+    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LocationKey}&q=${this.state.cityName}&format=json`;
+    axios
+      .get(url)
+      .then((res) => {
+        let data = res.data[0];
 
-      this.setState({
-        cityName: data.display_name,
-        lat: data.lat,
-        lon: data.lon,
+        this.setState({
+          cityName: data.display_name,
+          lat: data.lat,
+          lon: data.lon,
+          displayError: false,
+          errorMsg: "",
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          errorMsg: error,
+          displayError: true,
+        });
       });
-    });
-    // .catch((err) => {
-    //   console.log(err);
-    //   this.setState({
-    //     alertError: "error",
-    //   });
-    // });
   };
 
   render() {
     return (
       <div>
-        <h1>Search for a City </h1>
-        <form onSubmit={(e) => this.submitHandler(e)}>
-          <input
-            type="text"
-            onChange={(e) => {
-              this.getUserInputHandler(e);
-            }}
-            placeholder="Enter a City name ... "
-          />
-          <input type="submit" value="Explore!" />
-        </form>
+        <Container fluid>
+          <Row>
+            {this.state.displayError && (
+              <Alert key={1} variant={"danger"}>
+                {this.state.errorMsg.response.status} City not Found
+              </Alert>
+            )}
+          </Row>
+          <Row>
+            <Col>
+              <div style={{ margin: "20px" }}>
+                <Form onSubmit={(e) => this.submitHandler(e)}>
+                  <Form.Group
+                    className="mb-3"
+                    controlId="formBasicCity"
+                    style={{ display: "flex" }}
+                  >
+                    <Form.Control
+                      onChange={(e) => {
+                        this.getUserInputHandler(e);
+                      }}
+                      type="text"
+                      placeholder="Enter a City name ..."
+                      style={{ width: "300px" }}
+                    />
+                    <Button variant="primary" type="submit">
+                      Explore!
+                    </Button>
+                  </Form.Group>
+                </Form>
+              </div>
 
-        <Explore
-          cityName={this.state.cityName}
-          lat={this.state.lat}
-          lon={this.state.lon}
-        />
-        <div>
-          <img
-            src={`https://maps.locationiq.com/v3/staticmap?key=pk.273e78dd71a98f0da4149ed2d786eb7b&center=${this.state.lat},${this.state.lon}&zoom=1-18`}
-            alt="Map"
-            width="300px"
-          />
-        </div>
+              <div style={{ padding: "20px" }}>
+                <Explore
+                  cityName={this.state.cityName}
+                  lat={this.state.lat}
+                  lon={this.state.lon}
+                />
+              </div>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
