@@ -15,4 +15,4 @@ Change Log
 10-08-2021 8:00pm - Application now has a fully-functional , displaying map of spasific location .
 
 Credit and Collaborations
-My lab-06 partner Musa Rabea
+instructor , TAs and My lab-06 partner Musa Rabea
