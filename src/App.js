@@ -77,7 +77,6 @@ class App extends Component {
   };
 
   render() {
-    this.weather("amman");
     return (
       <div>
         <Container fluid>
