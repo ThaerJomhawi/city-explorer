@@ -19,6 +19,7 @@ class App extends Component {
       mapShow: false,
       displayError: false,
       errorMsg: "",
+      weatherData: [],
     };
   }
 
@@ -45,33 +46,20 @@ class App extends Component {
           errorMsg: "",
         });
       })
-      .catch((error) => {
-        this.setState({
-          errorMsg: error,
-          displayError: true,
-        });
-      });
-  };
-
-  weather = (cityName) => {
-    let weatherUrl = `http://localhost:8000/weather/${cityName.split(",")[0]}`;
-
-    axios
-      .get(weatherUrl)
-      .then((res) => {
-        let data = res.data;
-        console.log(res);
-
-        this.setState({
-          weatherData: data,
-          displayError: false,
+      .then(() => {
+        let cityName = this.state.cityName.split(",")[0];
+        let weatherApiUrl = `${process.env.REACT_APP_BACKEND_URL}/weather/${cityName}`;
+        axios.get(weatherApiUrl).then((res) => {
+          this.setState({
+            weatherData: res.data,
+          });
         });
       })
       .catch((error) => {
         this.setState({
+          errorMsg: error,
+
           displayError: true,
-          errorMsg: "Try Different City ",
-          weatherData: [],
         });
       });
   };
@@ -83,7 +71,7 @@ class App extends Component {
           <Row>
             {this.state.displayError && (
               <Alert key={1} variant={"danger"}>
-                {this.state.errorMsg.response.status} City not Found
+                City not Found
               </Alert>
             )}
           </Row>
@@ -125,7 +113,7 @@ class App extends Component {
               <Col>
                 {this.state.weatherData && (
                   <>
-                    {this.state.weatherDate.map((idx) => {
+                    {this.state.weatherData.map((idx) => {
                       return (
                         <Weather
                           date={idx.date}

@@ -9,7 +9,6 @@ class Weather extends Component {
       <div>
         <Card style={{ width: "30rem" }}>
           <ListGroup className="list-group-flush">
-            <ListGroupItem>Weather</ListGroupItem>
             <ListGroupItem>{this.props.date}</ListGroupItem>
             <ListGroupItem>{this.props.description}</ListGroupItem>
           </ListGroup>
