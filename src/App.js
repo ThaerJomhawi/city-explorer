@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import { Container, Row, Col } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
 import Weather from "./components/Weather";
+import Movies from "./components/Movies";
 
 class App extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class App extends Component {
       displayError: false,
       errorMsg: "",
       weatherData: [],
+      movieData: [],
     };
   }
 
@@ -47,11 +49,19 @@ class App extends Component {
         });
       })
       .then(() => {
-        let cityName = this.state.cityName.split(",")[0];
-        let weatherApiUrl = `${process.env.REACT_APP_BACKEND_URL}/weather/${cityName}`;
+        let weatherApiUrl = `${process.env.REACT_APP_BACKEND_URL}/weather/${this.state.lat}/${this.state.lon}`;
         axios.get(weatherApiUrl).then((res) => {
           this.setState({
             weatherData: res.data,
+          });
+        });
+      })
+      .then(() => {
+        let cityName = this.state.cityName.split(",")[0];
+        let movieApiUrl = `${process.env.REACT_APP_BACKEND_URL}/movie/${cityName}`;
+        axios.get(movieApiUrl).then((res) => {
+          this.setState({
+            movieData: res.data,
           });
         });
       })
@@ -124,6 +134,26 @@ class App extends Component {
                   </>
                 )}
               </Col>
+            </Row>
+          )}
+
+          {this.state.movieData && (
+            <Row>
+              <>
+                {this.state.movieData.map((itm) => {
+                  return (
+                    <Movies
+                      title={itm.title}
+                      overview={itm.overview}
+                      averageVotes={itm.vote_average}
+                      totalVotes={itm.vote_count}
+                      imageUrl={itm.poster_path}
+                      popularity={itm.popularity}
+                      releasedOn={itm.release_date}
+                    />
+                  );
+                })}
+              </>
             </Row>
           )}
         </Container>
