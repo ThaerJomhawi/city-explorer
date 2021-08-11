@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Container, Row, Col } from "react-bootstrap";
 import Alert from "react-bootstrap/Alert";
+import Weather from "./components/Weather";
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class App extends Component {
       lat: "",
       lon: "",
       cityName: "",
+      mapShow: false,
       displayError: false,
       errorMsg: "",
     };
@@ -38,6 +40,7 @@ class App extends Component {
           cityName: data.display_name,
           lat: data.lat,
           lon: data.lon,
+          mapShow: true,
           displayError: false,
           errorMsg: "",
         });
@@ -50,7 +53,31 @@ class App extends Component {
       });
   };
 
+  weather = (cityName) => {
+    let weatherUrl = `http://localhost:8000/weather/${cityName.split(",")[0]}`;
+
+    axios
+      .get(weatherUrl)
+      .then((res) => {
+        let data = res.data;
+        console.log(res);
+
+        this.setState({
+          weatherData: data,
+          displayError: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          displayError: true,
+          errorMsg: "Try Different City ",
+          weatherData: [],
+        });
+      });
+  };
+
   render() {
+    this.weather("amman");
     return (
       <div>
         <Container fluid>
@@ -62,38 +89,56 @@ class App extends Component {
             )}
           </Row>
           <Row>
-            <Col>
-              <div style={{ margin: "20px" }}>
-                <Form onSubmit={(e) => this.submitHandler(e)}>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="formBasicCity"
-                    style={{ display: "flex" }}
-                  >
-                    <Form.Control
-                      onChange={(e) => {
-                        this.getUserInputHandler(e);
-                      }}
-                      type="text"
-                      placeholder="Enter a City name ..."
-                      style={{ width: "300px" }}
-                    />
-                    <Button variant="primary" type="submit">
-                      Explore!
-                    </Button>
-                  </Form.Group>
-                </Form>
-              </div>
-
-              <div style={{ padding: "20px" }}>
-                <Explore
-                  cityName={this.state.cityName}
-                  lat={this.state.lat}
-                  lon={this.state.lon}
-                />
-              </div>
-            </Col>
+            {" "}
+            <div style={{ margin: "20px" }}>
+              <Form onSubmit={(e) => this.submitHandler(e)}>
+                <Form.Group
+                  className="mb-3"
+                  controlId="formBasicCity"
+                  style={{ display: "flex" }}
+                >
+                  <Form.Control
+                    onChange={(e) => {
+                      this.getUserInputHandler(e);
+                    }}
+                    type="text"
+                    placeholder="Enter a City name ..."
+                    style={{ width: "300px" }}
+                  />
+                  <Button variant="primary" type="submit">
+                    Explore!
+                  </Button>
+                </Form.Group>
+              </Form>
+            </div>
           </Row>
+          {this.state.mapShow && (
+            <Row>
+              <Col>
+                <div style={{ padding: "20px" }}>
+                  <Explore
+                    cityName={this.state.cityName}
+                    lat={this.state.lat}
+                    lon={this.state.lon}
+                  />
+                </div>
+              </Col>
+              <Col>
+                {this.state.weatherData && (
+                  <>
+                    {this.state.weatherDate.map((idx) => {
+                      return (
+                        <Weather
+                          date={idx.date}
+                          description={idx.description}
+                        />
+                      );
+                    })}
+                  </>
+                )}
+              </Col>
+            </Row>
+          )}
         </Container>
       </div>
     );
