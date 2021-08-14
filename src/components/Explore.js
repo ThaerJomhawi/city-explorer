@@ -10,7 +10,7 @@ class Explore extends Component {
         <Card style={{ width: "30rem" }}>
           <Card.Img
             variant="top"
-            src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LocationKey}&center=${this.props.lat},${this.props.lon}&zoom=1-18`}
+            src={`https://maps.locationiq.com/v3/staticmap?key=pk.273e78dd71a98f0da4149ed2d786eb7b&center=${this.props.lat},${this.props.lon}&zoom=1-18`}
             alt="Map"
             width="300px"
           />

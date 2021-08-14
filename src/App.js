@@ -33,7 +33,7 @@ class App extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LocationKey}&q=${this.state.cityName}&format=json`;
+    let url = `https://eu1.locationiq.com/v1/search.php?key=pk.273e78dd71a98f0da4149ed2d786eb7b&q=${this.state.cityName}&format=json`;
     axios
       .get(url)
       .then((res) => {
@@ -147,7 +147,7 @@ class App extends Component {
                       overview={itm.overview}
                       averageVotes={itm.vote_average}
                       totalVotes={itm.vote_count}
-                      imageUrl={itm.poster_path}
+                      imageUrl={itm.imageUrl}
                       popularity={itm.popularity}
                       releasedOn={itm.release_date}
                     />
