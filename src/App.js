@@ -9,6 +9,7 @@ import Alert from "react-bootstrap/Alert";
 import Weather from "./components/Weather";
 import Movies from "./components/Movies";
 
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,8 @@ class App extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    let url = `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LocationKey}&q=${this.state.cityName}&format=json`;
+    let url = `https://eu1.locationiq.com/v1/search.php?key=pk.273e78dd71a98f0da4149ed2d786eb7b&q=${this.state.cityName}&format=json`;
+    console.log(url);
     axios
       .get(url)
       .then((res) => {
@@ -49,7 +51,7 @@ class App extends Component {
         });
       })
       .then(() => {
-        let weatherApiUrl = `${process.env.REACT_APP_BACKEND_URL}/weather/${this.state.lat}/${this.state.lon}`;
+        let weatherApiUrl = `http://localhost:8000/weather/${this.state.lat}/${this.state.lon}`;
         axios.get(weatherApiUrl).then((res) => {
           this.setState({
             weatherData: res.data,
@@ -58,7 +60,7 @@ class App extends Component {
       })
       .then(() => {
         let cityName = this.state.cityName.split(",")[0];
-        let movieApiUrl = `${process.env.REACT_APP_BACKEND_URL}/movie/${cityName}`;
+        let movieApiUrl = `http://localhost:8000/movie/${cityName}`;
         axios.get(movieApiUrl).then((res) => {
           this.setState({
             movieData: res.data,
@@ -137,25 +139,33 @@ class App extends Component {
             </Row>
           )}
 
-          {this.state.movieData && (
-            <Row>
-              <>
-                {this.state.movieData.map((itm) => {
-                  return (
-                    <Movies
-                      title={itm.title}
-                      overview={itm.overview}
-                      averageVotes={itm.vote_average}
-                      totalVotes={itm.vote_count}
-                      imageUrl={itm.poster_path}
-                      popularity={itm.popularity}
-                      releasedOn={itm.release_date}
-                    />
-                  );
-                })}
-              </>
-            </Row>
+          <Row fluid style={{ margin: "20px" }}>
+
+            {this.state.movieData && (
+
+              <Col>
+                <>
+                  {this.state.movieData.map((itm) => {
+
+                    console.log(itm)
+                    return (
+                      <Movies
+                        title={itm.title}
+                        overview={itm.overview}
+                        averageVotes={itm.averageVotes}
+                        vote_count={itm.vote_count}
+                        imageUrl={itm.imageUrl}
+                        popularity={itm.popularity}
+                        releasedOn={itm.releasedOn}
+                      />
+                    );
+
+                  })}
+                </>
+              </Col>
+            
           )}
+          </Row>
         </Container>
       </div>
     );

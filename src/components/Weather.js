@@ -7,7 +7,7 @@ class Weather extends Component {
   render() {
     return (
       <div>
-        <Card style={{ width: "30rem" }}>
+        <Card style={{ width: "20rem" , margin:"10px" }}>
           <ListGroup className="list-group-flush">
             <ListGroupItem>{this.props.date}</ListGroupItem>
             <ListGroupItem>{this.props.description}</ListGroupItem>
