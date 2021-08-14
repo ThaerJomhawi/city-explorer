@@ -51,7 +51,7 @@ class App extends Component {
         });
       })
       .then(() => {
-        let weatherApiUrl = `http://localhost:8000/weather/${this.state.lat}/${this.state.lon}`;
+        let weatherApiUrl = `${process.env.REACT_APP_BACKEND_URL}/weather/${this.state.lat}/${this.state.lon}`;
         axios.get(weatherApiUrl).then((res) => {
           this.setState({
             weatherData: res.data,
@@ -60,7 +60,7 @@ class App extends Component {
       })
       .then(() => {
         let cityName = this.state.cityName.split(",")[0];
-        let movieApiUrl = `http://localhost:8000/movie/${cityName}`;
+        let movieApiUrl = `${process.env.REACT_APP_BACKEND_URL}/movie/${cityName}`;
         axios.get(movieApiUrl).then((res) => {
           this.setState({
             movieData: res.data,
